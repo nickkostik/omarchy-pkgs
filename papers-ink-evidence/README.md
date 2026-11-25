@@ -17,7 +17,7 @@ In Papers 51.1 with Poppler 26.10, the Pencil strokes I tested were saved as PDF
 - The save dialog describes when Pencil ink may become permanent. **Save Editable Copy** keeps the Pencil strokes editable in the saved copy. Undo and redo still work in the open editing session.
 - Saves with no new eligible strokes skip the qpdf rewrite. Encrypted and certificate-signed PDFs use Papers’ ordinary save path. Local saves write a complete copy before replacing the destination and keep edits available if the write fails.
 
-The package uses qpdf to edit PDF objects and rebuilds when qpdf changes. A Papers version bump needs a review of both patches. Form widgets still render in the annotation layer, so an opaque widget can cover page ink where they overlap.
+The package uses qpdf to edit PDF objects and rebuilds when qpdf changes. I’d review both patches on each Papers update. The Print flag backport can come out when the packaged release includes upstream commit `91ea1c3`. The save patch and qpdf dependency can come out when an upstream release meets the same save, share, and print checks. Form widgets still render in the annotation layer, so an opaque widget can cover page ink where they overlap.
 
 ## What I verified
 
@@ -32,4 +32,6 @@ To compare the two PDFs, run `pdftoppm -hide-annotations -png -singlefile` on ea
 
 ## If carrying the second patch is out of scope
 
-The upstream Print flag fix can ship on its own. For sharing, I’d propose **Save Flattened Copy** upstream in Papers so users can choose when to embed handwritten strokes in a portable copy. A stored Pencil appearance in Poppler would also help viewers that support annotations but need the appearance stream.
+I built the upstream Print flag backport on its own against clean Papers 51.1 sources with the stock PDF dependencies. The test PDF kept one `/Ink` annotation with its Print flag set. Poppler showed the stroke when printing markup annotations. A page-content-only render omitted the stroke, and the original text remained selectable.
+
+For sharing, I’d propose **Save Flattened Copy** upstream in Papers so users can choose when to embed handwritten strokes in a portable copy. A stored Pencil appearance in Poppler would also help viewers that support annotations but need the appearance stream.
